@@ -1,0 +1,11 @@
+FROM mysql:8.0
+
+# Copy the SQL script to the initialization directory
+# MySQL will automatically execute any .sql scripts in this folder on startup
+COPY FlightTicket.sql /docker-entrypoint-initdb.d/
+
+# Environment variables for database setup
+ENV MYSQL_DATABASE=FlightTicket
+ENV MYSQL_ROOT_PASSWORD=Lamdv(156404)
+
+EXPOSE 3306

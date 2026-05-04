@@ -1,0 +1,51 @@
+services:
+  # MySQL Database Service
+  - type: web
+    name: mysql-db
+    env: docker
+    dockerfilePath: Dockerfile.mysql
+    plan: free
+    region: singapore
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: Lamdv(156404)
+      - key: MYSQL_DATABASE
+        value: FlightTicket
+    # We use a health check to ensure MySQL is ready
+    healthCheckPath: /
+    # Note: MySQL is not HTTP, so a standard health check might fail. 
+    # On Render Free, 'web' services are the only free option for Docker.
+    # We will use internal networking for the backend to connect.
+
+  # Spring Boot Backend Service
+  - type: web
+    name: flight-backend
+    env: docker
+    dockerfilePath: Dockerfile.be
+    plan: free
+    region: singapore
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://mysql-db:3306/FlightTicket?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true
+      - key: SPRING_DATASOURCE_USERNAME
+        value: root
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: Lamdv(156404)
+      - key: AI_API_KEY
+        sync: false # Set this manually in Render Dashboard
+      - key: JWT_SECRET
+        value: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      - key: MAIL_USERNAME
+        value: huudzung1072005@gmail.com
+      - key: MAIL_PASSWORD
+        value: dwdekjtahyrdjqss
+
+  # React Frontend (Static Site)
+  - type: static
+    name: flight-frontend
+    env: static
+    buildCommand: cd fe && npm install && npm run build
+    publishPath: fe/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://flight-backend.onrender.com # Change this to your backend URL

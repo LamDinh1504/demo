@@ -1,4 +1,4 @@
-CREATE DATABASE FlightTicket;
+CREATE DATABASE IF NOT EXISTS FlightTicket;
 USE FlightTicket;
 -- BƯỚC 1: DỌN RÁC & RESET ID VỀ 1
 -- =====================================================================================

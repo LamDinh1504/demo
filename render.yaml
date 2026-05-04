@@ -11,11 +11,7 @@ services:
         value: Lamdv(156404)
       - key: MYSQL_DATABASE
         value: FlightTicket
-    # We use a health check to ensure MySQL is ready
-    healthCheckPath: /
-    # Note: MySQL is not HTTP, so a standard health check might fail. 
-    # On Render Free, 'web' services are the only free option for Docker.
-    # We will use internal networking for the backend to connect.
+
 
   # Spring Boot Backend Service
   - type: web

@@ -2,8 +2,7 @@ services:
   # MySQL Database Service
   - type: web
     name: mysql-db
-    env: docker
-    dockerfilePath: Dockerfile.mysql
+    image: mysql:8.0
     plan: free
     region: singapore
     envVars:

@@ -1,0 +1,22 @@
+# Maven
+target/
+*.class
+
+# Node / Frontend
+node_modules/
+dist/
+.env
+.env.*
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# Docker
+.gemini/
+*.log
+
+# Secrets
+.env

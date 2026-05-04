@@ -1,0 +1,18 @@
+# Backend
+be/target/
+be/*.jar
+be/.idea/
+be/.vscode/
+be/.settings/
+be/.classpath
+be/.project
+
+# Frontend
+fe/node_modules
+fe/dist
+fe/.git
+fe/.vscode
+
+# Root
+.git
+node_modules

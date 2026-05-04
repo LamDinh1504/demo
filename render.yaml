@@ -1,18 +1,4 @@
 services:
-  # MySQL Database Service
-  - type: web
-    name: mysql-db
-    env: docker
-    dockerfilePath: Dockerfile.mysql
-    plan: free
-    region: singapore
-    envVars:
-      - key: MYSQL_ROOT_PASSWORD
-        value: Lamdv(156404)
-      - key: MYSQL_DATABASE
-        value: FlightTicket
-
-
   # Spring Boot Backend Service
   - type: web
     name: flight-backend
@@ -22,13 +8,19 @@ services:
     region: singapore
     envVars:
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:mysql://mysql-db:3306/FlightTicket?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true
+        fromDatabase:
+          name: flight-db
+          property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
-        value: root
+        fromDatabase:
+          name: flight-db
+          property: user
       - key: SPRING_DATASOURCE_PASSWORD
-        value: Lamdv(156404)
+        fromDatabase:
+          name: flight-db
+          property: password
       - key: AI_API_KEY
-        sync: false # Set this manually in Render Dashboard
+        sync: false
       - key: JWT_SECRET
         value: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
       - key: MAIL_USERNAME
@@ -45,3 +37,10 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://flight-backend.onrender.com
+
+databases:
+  - name: flight-db
+    databaseName: flight_ticket
+    user: flight_user
+    plan: free
+    region: singapore

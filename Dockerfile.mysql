@@ -1,2 +1,0 @@
-FROM mysql:8.0
-# No custom initialization here, we handle it in Spring Boot data.sql

@@ -1,36 +1,26 @@
--- BƯỚC 1: DỌN RÁC & RESET ID VỀ 1
 -- =====================================================================================
-SET FOREIGN_KEY_CHECKS = 0;
+-- BƯỚC 1: DỌN RÁC & RESET ID
+-- =====================================================================================
+SET session_replication_role = 'replica';
 
-TRUNCATE TABLE CT_DATVE;
-TRUNCATE TABLE TRUNGGIAN;
-TRUNCATE TABLE CT_CHUYENBAY;
-TRUNCATE TABLE THANHTOAN;
-TRUNCATE TABLE DATVE;
-TRUNCATE TABLE CHUYENBAY;
-TRUNCATE TABLE MAYBAY;
-TRUNCATE TABLE PHUONGTHUCTHANHTOAN;
-TRUNCATE TABLE KHUYENMAI;
-TRUNCATE TABLE HANGVE;
-TRUNCATE TABLE HANGHANGKHONG;
-TRUNCATE TABLE SANBAY;
-TRUNCATE TABLE NGUOIDUNG;
+TRUNCATE TABLE CT_DATVE RESTART IDENTITY CASCADE;
+TRUNCATE TABLE TRUNGGIAN RESTART IDENTITY CASCADE;
+TRUNCATE TABLE CT_CHUYENBAY RESTART IDENTITY CASCADE;
+TRUNCATE TABLE THANHTOAN RESTART IDENTITY CASCADE;
+TRUNCATE TABLE DATVE RESTART IDENTITY CASCADE;
+TRUNCATE TABLE CHUYENBAY RESTART IDENTITY CASCADE;
+TRUNCATE TABLE MAYBAY RESTART IDENTITY CASCADE;
+TRUNCATE TABLE PHUONGTHUCTHANHTOAN RESTART IDENTITY CASCADE;
+TRUNCATE TABLE KHUYENMAI RESTART IDENTITY CASCADE;
+TRUNCATE TABLE HANGVE RESTART IDENTITY CASCADE;
+TRUNCATE TABLE HANGHANGKHONG RESTART IDENTITY CASCADE;
+TRUNCATE TABLE SANBAY RESTART IDENTITY CASCADE;
+TRUNCATE TABLE NGUOIDUNG RESTART IDENTITY CASCADE;
 
--- Đặt lại bộ đếm ID về 1 cho tất cả các bảng có AUTO_INCREMENT
-ALTER TABLE CT_DATVE AUTO_INCREMENT = 1;
-ALTER TABLE THANHTOAN AUTO_INCREMENT = 1;
-ALTER TABLE DATVE AUTO_INCREMENT = 1;
-ALTER TABLE CHUYENBAY AUTO_INCREMENT = 1;
-ALTER TABLE MAYBAY AUTO_INCREMENT = 1;
-ALTER TABLE KHUYENMAI AUTO_INCREMENT = 1;
-ALTER TABLE HANGHANGKHONG AUTO_INCREMENT = 1;
-ALTER TABLE SANBAY AUTO_INCREMENT = 1;
-ALTER TABLE NGUOIDUNG AUTO_INCREMENT = 1;
-
-SET FOREIGN_KEY_CHECKS = 1;
+SET session_replication_role = 'origin';
 
 -- =====================================================================================
--- BƯỚC 2: TỪ ĐIỂN DỮ LIỆU CỐ ĐỊNH (Sân Bay, Hãng Bay, Hạng Vé, PTTT, Khuyến Mãi)
+-- BƯỚC 2: TỪ ĐIỂN DỮ LIỆU CỐ ĐỊNH
 -- =====================================================================================
 INSERT INTO SANBAY (MaIATA, TenSanBay, ThanhPho, QuocGia) VALUES
 ('SGN', 'Tân Sơn Nhất', 'Hồ Chí Minh', 'Việt Nam'), ('HAN', 'Nội Bài', 'Hà Nội', 'Việt Nam'),
@@ -67,7 +57,7 @@ INSERT INTO KHUYENMAI (code, TenChuongTrinh, MoTaTenChuongTrinh ,PhanTramGiam, S
 ('WINTER2026', 'Đông Ấm Áp', 'Khuyến mãi mùa đông cho các chuyến bay cuối năm. Cùng gia đình tận hưởng kỳ nghỉ ấm áp giữa tiết trời se lạnh.', 12.00, 600000.00, '2026-12-01', '2027-02-15', 400, 'https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?auto=format&fit=crop&w=1200&q=80');
 
 -- =====================================================================================
--- BƯỚC 3: MÁY BAY & NGƯỜI DÙNG (CẬP NHẬT VAI TRÒ)
+-- BƯỚC 3: MÁY BAY & NGƯỜI DÙNG
 -- =====================================================================================
 INSERT INTO MAYBAY (MaHangHK, TenMayBay, TongSoGhe) VALUES
 (1, 'Boeing 787-9', 274), (1, 'Boeing 787-10', 367), (1, 'Airbus A350', 305), (1, 'Airbus A350', 305), (1, 'Airbus A321neo', 203),
@@ -81,7 +71,6 @@ INSERT INTO MAYBAY (MaHangHK, TenMayBay, TongSoGhe) VALUES
 (6, 'Boeing 747-8i', 368), (6, 'Airbus A380', 407), (6, 'Boeing 777', 291), (6, 'Boeing 787-9', 269), (6, 'Airbus A220', 140),
 (7, 'Airbus A350-1000', 239), (7, 'Airbus A350', 369), (7, 'Boeing 777', 244), (7, 'Boeing 787-8', 186), (7, 'Boeing 737', 144);
 
--- VAI TRÒ: ADMIN, USER, CLIENT, EMPLOYEE
 INSERT INTO NGUOIDUNG (HoTen, CCCD, Sdt, Email, MatKhau, NgaySinh, DiaChi, VaiTro) VALUES
 ('Đinh Văn Lâm', '079090123456', '0901234567', 'lam.dv@uit.edu.vn', '123', '2005-01-01', 'TP.HCM', 'ADMIN'),
 ('Nguyễn Trần Trung Quân', '079090111112', '0901111111', 'quan@gmail.com', '123', '1992-01-01', 'Hà Nội', 'USER'),
@@ -142,7 +131,6 @@ INSERT INTO NGUOIDUNG (HoTen, CCCD, Sdt, Email, MatKhau, NgaySinh, DiaChi, VaiTr
 -- BƯỚC 4: CHUYẾN BAY & CHI TIẾT
 -- =====================================================================================
 INSERT INTO CHUYENBAY (MaHangHK, MaMayBay, MaSanBayDi, MaSanBayDen, NgayGioKhoiHanh, NgayGioHaCanh, ThoiGianBay, TrangThai) VALUES
--- 10 NỘI ĐỊA (1-10)
 (1, 1, 1, 2, '2026-06-10 07:00:00', '2026-06-10 09:15:00', 135, 'Đã lên lịch'),
 (2, 11, 1, 3, '2026-06-10 08:30:00', '2026-06-10 09:50:00', 80, 'Đã lên lịch'),
 (3, 21, 2, 4, '2026-06-11 10:00:00', '2026-06-11 11:45:00', 105, 'Đã lên lịch'),
@@ -153,7 +141,6 @@ INSERT INTO CHUYENBAY (MaHangHK, MaMayBay, MaSanBayDi, MaSanBayDen, NgayGioKhoiH
 (2, 17, 1, 6, '2026-07-01 06:00:00', '2026-07-01 06:45:00', 45, 'Đã lên lịch'),
 (1, 7, 6, 1, '2026-07-02 15:00:00', '2026-07-02 15:45:00', 45, 'Đã lên lịch'),
 (3, 23, 2, 8, '2026-07-05 09:30:00', '2026-07-05 10:30:00', 60, 'Đã lên lịch'),
--- 10 QUỐC TẾ (11-20)
 (5, 36, 1, 11, '2026-07-15 10:00:00', '2026-07-15 13:00:00', 180, 'Đã lên lịch'),
 (6, 41, 2, 13, '2026-07-25 23:00:00', '2026-07-26 05:00:00', 240, 'Đã lên lịch'),
 (7, 46, 1, 14, '2026-08-05 00:30:00', '2026-08-05 08:00:00', 330, 'Đã lên lịch'),
@@ -164,7 +151,6 @@ INSERT INTO CHUYENBAY (MaHangHK, MaMayBay, MaSanBayDi, MaSanBayDen, NgayGioKhoiH
 (6, 42, 2, 19, '2026-09-05 20:00:00', '2026-09-06 14:00:00', 1080, 'Đã lên lịch'),
 (8, 30, 1, 15, '2026-09-10 16:00:00', '2026-09-11 06:00:00', 840, 'Đã lên lịch'),
 (9, 31, 2, 11, '2026-09-15 11:00:00', '2026-09-15 14:30:00', 210, 'Đã lên lịch'),
--- 10 NỘI ĐỊA VỀ (21-30)
 (1, 4, 2, 1, '2026-06-12 07:00:00', '2026-06-12 09:15:00', 135, 'Đã lên lịch'),
 (2, 13, 3, 1, '2026-06-13 08:30:00', '2026-06-13 09:50:00', 80, 'Đã lên lịch'),
 (3, 22, 4, 2, '2026-06-14 10:00:00', '2026-06-14 11:45:00', 105, 'Đã lên lịch'),
@@ -175,7 +161,6 @@ INSERT INTO CHUYENBAY (MaHangHK, MaMayBay, MaSanBayDi, MaSanBayDen, NgayGioKhoiH
 (2, 20, 6, 1, '2026-07-04 06:00:00', '2026-07-04 06:45:00', 45, 'Đã lên lịch'),
 (1, 7, 1, 6, '2026-07-05 15:00:00', '2026-07-05 15:45:00', 45, 'Đã lên lịch'),
 (3, 24, 8, 2, '2026-07-08 09:30:00', '2026-07-08 10:30:00', 60, 'Đã lên lịch'),
--- 10 QUỐC TẾ VỀ (31-40)
 (5, 37, 11, 1, '2026-07-20 10:00:00', '2026-07-20 13:00:00', 180, 'Đã lên lịch'),
 (6, 44, 13, 2, '2026-07-30 23:00:00', '2026-07-31 05:00:00', 240, 'Đã lên lịch'),
 (7, 48, 14, 1, '2026-08-10 00:30:00', '2026-08-10 08:00:00', 330, 'Đã lên lịch'),
@@ -199,7 +184,6 @@ INSERT INTO TRUNGGIAN (MaChuyenBay, MaSanBayTG, ThoiGianDung, ThuTuDung, GhiChu)
 (34, 12, 150, 1, 'Transit lượt về tại Suvarnabhumi'),
 (35, 11, 180, 1, 'Dừng tại Changi Singapore lượt về');
 
--- Chi tiết vé (Tạo Data Tự Động Giá)
 INSERT INTO CT_CHUYENBAY (MaChuyenBay, MaHangVe, SoLuongCho, SoLuongConLai, GiaCoBan)
 SELECT MaChuyenBay, 1, 150, 100, CASE WHEN MaSanBayDen > 10 THEN 3500000 ELSE 1250000 END FROM CHUYENBAY;
 INSERT INTO CT_CHUYENBAY (MaChuyenBay, MaHangVe, SoLuongCho, SoLuongConLai, GiaCoBan)
@@ -208,8 +192,7 @@ INSERT INTO CT_CHUYENBAY (MaChuyenBay, MaHangVe, SoLuongCho, SoLuongConLai, GiaC
 SELECT MaChuyenBay, 3, 20, 10, CASE WHEN MaSanBayDen > 10 THEN 10500000 ELSE 3750000 END FROM CHUYENBAY;
 
 -- =====================================================================================
--- BƯỚC 5: 50 ĐƠN ĐẶT VÉ (Cập nhật TrangThai chuẩn xác)
--- Trạng Thái Chấp Nhận: 'Đã thanh toán', 'Chưa thanh toán', 'Đã hủy'
+-- BƯỚC 5: 50 ĐƠN ĐẶT VÉ
 -- =====================================================================================
 INSERT INTO DATVE (MaDatCho, MaNguoiDung, MaKhuyenMai, NgayDatVe, TongTien, TrangThai) VALUES
 ('ABC101', 1, NULL, '2026-05-01 10:00:00', 1250000.00, 'Đã thanh toán'),
@@ -242,7 +225,6 @@ INSERT INTO DATVE (MaDatCho, MaNguoiDung, MaKhuyenMai, NgayDatVe, TongTien, Tran
 ('DEF128', 28, NULL, '2026-05-28 15:30:00', 800000.00, 'Đã thanh toán'),
 ('GHI129', 29, NULL, '2026-05-29 11:00:00', 800000.00, 'Chưa thanh toán'),
 ('JKL130', 30, NULL, '2026-05-30 09:45:00', 3000000.00, 'Đã thanh toán'),
--- Tăng thêm 20 dữ liệu mới
 ('MNO131', 31, NULL, '2026-05-31 08:00:00', 1250000.00, 'Đã thanh toán'),
 ('PQR132', 32, 1, '2026-06-01 12:30:00', 4500000.00, 'Đã thanh toán'),
 ('STU133', 33, NULL, '2026-06-02 09:15:00', 3600000.00, 'Đã hủy'),
@@ -265,20 +247,18 @@ INSERT INTO DATVE (MaDatCho, MaNguoiDung, MaKhuyenMai, NgayDatVe, TongTien, Tran
 ('RST150', 54, 2, '2026-06-19 08:45:00', 1530000.00, 'Đã thanh toán');
 
 -- =====================================================================================
--- BƯỚC 6: CHI TIẾT ĐẶT VÉ VÀ THANH TOÁN (Khớp 100% với đơn hàng)
+-- BƯỚC 6: CHI TIẾT ĐẶT VÉ VÀ THANH TOÁN
 -- =====================================================================================
--- Thanh toán sẽ chỉ tạo cho các đơn hàng có trạng thái "Đã thanh toán"
 INSERT INTO THANHTOAN (MaDatVe, MaPTTT, SoTien, ThoiGianThanhToan, TrangThai)
 SELECT 
     MaDatVe, 
-    (SELECT MaPTTT FROM PHUONGTHUCTHANHTOAN ORDER BY RAND() LIMIT 1), -- Tự động bốc ngẫu nhiên 1 ID CÓ THẬT
+    (SELECT MaPTTT FROM PHUONGTHUCTHANHTOAN ORDER BY random() LIMIT 1),
     TongTien, 
-    DATE_ADD(NgayDatVe, INTERVAL 5 MINUTE), 
+    NgayDatVe + INTERVAL '5 minutes', 
     'Thành công'
 FROM DATVE 
 WHERE TrangThai = 'Đã thanh toán';
 
--- Chi tiết hành khách (Giữ lại data của bạn và nhân thêm cho đủ 50 đơn)
 INSERT INTO CT_DATVE (MaDatVe, MaChuyenBay, MaHangVe, HoTenHK, CCCD, NgaySinh, GioiTinh, DoiTuong, SoGhe, GiaVe, GiaHanhLy, CanNangHanhLy) VALUES 
 (1, 1, 1, 'Đinh Văn Lâm', '079090123456', '2005-01-01', 'Nam', 'Người lớn', '12A', 1250000.00, 0, 7), 
 (2, 12, 1, 'Nguyễn Trần Trung Quân', '079090111112', '1992-01-01', 'Nam', 'Người lớn', '14B', 4500000.00, 0, 7), 

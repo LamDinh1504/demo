@@ -7,15 +7,15 @@ services:
     plan: free
     region: singapore
     envVars:
-      - key: DB_URL_RENDER
+      - key: MY_DB_URL
         fromDatabase:
           name: flight-db
           property: connectionString
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: MY_DB_USER
         fromDatabase:
           name: flight-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: MY_DB_PASS
         fromDatabase:
           name: flight-db
           property: password

@@ -41,10 +41,11 @@ services:
         value: dwdekjtahyrdjqss
 
   # React Frontend (Static Site)
-  - type: static_site
+  - type: web
     name: flight-frontend
+    env: static
     buildCommand: cd fe && npm install && npm run build
-    publishPath: fe/dist
+    staticPublishPath: fe/dist
     envVars:
       - key: VITE_API_URL
         value: https://flight-backend.onrender.com
